@@ -18,6 +18,7 @@ function App() {
   const [savedHaikus, setSavedHaikus] = useState("");
   const [showDownloadModal, setShowDownloadModal] = useState(false);
   const [downloadID, setDownloadID] = useState("");
+  const [isFading, setIsFading] = useState(false);
 
   const targetSyllables = [5, 7, 5];
 
@@ -99,7 +100,9 @@ function App() {
         )}
         {saved && (
           <div>
-            <div className="complete-message">{"✨ Saved! ✨"}</div>
+            <div className={`complete-message ${isFading ? "fade-out" : ""}`}>
+              {"✨ Saved! ✨"}
+            </div>
           </div>
         )}
         {/* button row */}
@@ -116,7 +119,13 @@ function App() {
                 line2: "",
                 line3: "",
               });
-              setTimeout(() => setSaved(false), 2000);
+              setTimeout(() => {
+                setIsFading(true); //Start Fade Out
+                setTimeout(() => {
+                  setSaved(false); //Actually remove it
+                  setIsFading(false);
+                }, 500);
+              }, 2000);
               const newSavedHaikus = getAllHaikus();
               setSavedHaikus(newSavedHaikus);
             }}
