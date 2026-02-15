@@ -4,6 +4,7 @@ import HaikuLine from "./HaikuLine";
 import { countSyllables } from "./syllableCounter";
 import "./App.css";
 import { saveHaiku, getAllHaikus, deleteHaiku } from "./haikuStorage";
+import html2canvas from "html2canvas";
 
 function App() {
   const [lines, setLines] = useState({
@@ -32,6 +33,33 @@ function App() {
       ...prev,
       [lineKey]: value,
     }));
+  };
+
+  const shareAsImage = async (haikuId) => {
+    // Find the specific card element
+    const cardElement = document.querySelector(`[data-haiku-id="${haikuId}"]`);
+    if (!cardElement) return;
+
+    // hide buttons before screenshot
+    const buttons = cardElement.querySelector(".card-buttons");
+    const originalDisplay = buttons.style.display;
+    buttons.style.display = "none";
+
+    //convert to canvas - take screenshot
+    const canvas = await html2canvas(cardElement);
+
+    // show buttons again
+    buttons.style.display = originalDisplay;
+
+    //convert canvas to blob - download
+    canvas.toBlob((blob) => {
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = "haiku.png";
+      link.href = url;
+      link.click();
+    });
   };
 
   return (
@@ -142,22 +170,34 @@ function App() {
               <p>No saved haikus, waiting for words of wisdom</p>
             ) : (
               savedHaikus.map((h) => (
-                <article key={h.id} className="haiku-card">
+                <article key={h.id} className="haiku-card" data-haiku-id={h.id}>
                   <p className="haiku-line">{h.line1}</p>
                   <p className="haiku-line">{h.line2}</p>
                   <p className="haiku-line">{h.line3}</p>
-                  <button
-                    aria-label={`Delete haiku: ${h.line1}`}
-                    className="delete-btn"
-                    onClick={() => {
-                      console.log(h.id);
-                      deleteHaiku(h.id);
-                      const newSavedHaikus = getAllHaikus();
-                      setSavedHaikus(newSavedHaikus);
-                    }}
-                  >
-                    Delete
-                  </button>
+
+                  <div className="card-buttons">
+                    <button
+                      aria-label={`Share haiku: ${h.line1}`}
+                      className="share-btn"
+                      onClick={() => {
+                        shareAsImage(h.id);
+                      }}
+                    >
+                      Share
+                    </button>
+                    <button
+                      aria-label={`Delete haiku: ${h.line1}`}
+                      className="delete-btn"
+                      onClick={() => {
+                        console.log(h.id);
+                        deleteHaiku(h.id);
+                        const newSavedHaikus = getAllHaikus();
+                        setSavedHaikus(newSavedHaikus);
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </article>
               ))
             )}
