@@ -93,6 +93,12 @@ h1 {
   outline-offset: 2px;
 }
 
+.save-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .clear-btn {
   background-color: #f59e0b;
 }
@@ -104,6 +110,12 @@ h1 {
 .clear-btn:focus-visible {
   outline: 3px solid #f59e0b;
   outline-offset: 2px;
+}
+
+.clear-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .view-haikus-btn {
@@ -120,17 +132,17 @@ h1 {
 }
 
 .savedHaikus-title {
-  color: #667eea; /* Match the View button */
-  font-size: 1.5em; /* or 1.8em, experiment */
-  font-weight: 700; /* bold */
-  margin: 10px 0; /* space before the cards */
+  color: #667eea;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 10px 0 0 0;
   text-align: center;
 }
 
 .example {
   margin-top: 30px;
   padding: 20px;
-  background: #f3f4f6;
+  background-color: rgb(212, 222, 231);
   border-radius: 12px;
   border-left: 4px solid #667eea;
 }
@@ -162,7 +174,9 @@ h1 {
   padding: 20px;
   margin: 15px;
   border-radius: 15px;
-  box-shadow: -5px 5px 4px 2px rgba(0, 0, 0, 0.3);
+  border-left: 4px solid #667eea;
+
+  /* box-shadow: -5px 5px 4px 2px rgba(0, 0, 0, 0.3); */
 }
 
 .haiku-line {
@@ -175,7 +189,8 @@ h1 {
   margin-top: 15px;
 }
 
-.share-btn {
+.download-btn,
+.confirm-button {
   padding: 5px 10px;
   margin: 10px 0 0 0;
   color: white;
@@ -187,16 +202,19 @@ h1 {
   cursor: pointer;
 }
 
-.share-btn:hover {
+.download-btn:hover,
+.confirm-button:hover {
   background-color: #5568d3;
 }
 
-.share-btn:focus-visible {
+.download-btn:focus-visible,
+.confirm-button:focus-visible {
   outline: 3px solid #667eea;
   outline-offset: 2px;
 }
 
-.delete-btn {
+.delete-btn,
+.cancel-button {
   padding: 5px 10px;
   margin: 10px 0 0 0;
   color: aliceblue;
@@ -205,13 +223,43 @@ h1 {
   background-color: rgba(245, 50, 89, 0.8);
   border: 0.2px solid rgba(0, 0, 0, 0.3);
   transition: background-color 0.2s;
+  cursor: pointer;
 }
 
-.delete-btn:hover {
+.delete-btn:hover,
+.cancel-button:hover {
   background-color: rgba(219, 35, 72, 1);
 }
 
-.delete-btn:focus-visible {
+.delete-btn:focus-visible,
+.cancel-button:focus-visible {
   outline: 3px solid rgba(245, 50, 89, 0.8);
   outline-offset: 2px;
+}
+
+.dialog-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  max-width: 30rem;
+  padding: 30px;
+  background-color: white;
+  border-radius: 35px;
+}
+
+.modal-button-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }

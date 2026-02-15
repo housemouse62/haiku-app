@@ -16,6 +16,8 @@ function App() {
   const [saved, setSaved] = useState(false);
   const [showHaikus, setShowHaikus] = useState(false);
   const [savedHaikus, setSavedHaikus] = useState("");
+  const [showDownloadModal, setShowDownloadModal] = useState(false);
+  const [downloadID, setDownloadID] = useState("");
 
   const targetSyllables = [5, 7, 5];
 
@@ -93,9 +95,7 @@ function App() {
           onChange={(value) => updateLine("line3", value)}
         />
         {isComplete && !saved && (
-          <div className="complete-message">
-            {"✨ Perfect haiku! Well done! ✨"}
-          </div>
+          <div className="complete-message">{"✨ You do haiku! ✨"}</div>
         )}
         {saved && (
           <div>
@@ -105,40 +105,25 @@ function App() {
         {/* button row */}
         <div className="button-row">
           {/* Save Button */}
-          {isComplete && !saved && (
-            <button
-              className="save-btn"
-              onClick={() => {
-                saveHaiku(lines);
-                setSaved(true);
-                setLines({
-                  line1: "",
-                  line2: "",
-                  line3: "",
-                });
-                setTimeout(() => setSaved(false), 2000);
-                const newSavedHaikus = getAllHaikus();
-                setSavedHaikus(newSavedHaikus);
-              }}
-            >
-              Save
-            </button>
-          )}
-          {/* clear the fields button*/}
-          {!fieldsEmpty && (
-            <button
-              className="clear-btn"
-              onClick={() => {
-                setLines({
-                  line1: "",
-                  line2: "",
-                  line3: "",
-                });
-              }}
-            >
-              Clear
-            </button>
-          )}
+          <button
+            disabled={!isComplete || saved}
+            className="save-btn"
+            onClick={() => {
+              saveHaiku(lines);
+              setSaved(true);
+              setLines({
+                line1: "",
+                line2: "",
+                line3: "",
+              });
+              setTimeout(() => setSaved(false), 2000);
+              const newSavedHaikus = getAllHaikus();
+              setSavedHaikus(newSavedHaikus);
+            }}
+          >
+            Save
+          </button>
+
           {/* View Haikus/Hide Haikus button */}
           <button
             className="view-haikus-btn"
@@ -153,6 +138,21 @@ function App() {
             }}
           >
             {showHaikus ? "Hide Saved Haikus" : "View Saved Haikus"}
+          </button>
+
+          {/* clear the fields button*/}
+          <button
+            disabled={fieldsEmpty}
+            className="clear-btn"
+            onClick={() => {
+              setLines({
+                line1: "",
+                line2: "",
+                line3: "",
+              });
+            }}
+          >
+            Clear
           </button>
         </div>
         {/* Example Haikus Area */}
@@ -180,13 +180,14 @@ function App() {
 
                   <div className="card-buttons">
                     <button
-                      aria-label={`Share haiku: ${h.line1}`}
-                      className="share-btn"
+                      aria-label={`Download haiku: ${h.line1}`}
+                      className="download-btn"
                       onClick={() => {
-                        shareAsImage(h.id);
+                        setShowDownloadModal(true);
+                        setDownloadID(h.id);
                       }}
                     >
-                      Share
+                      Download
                     </button>
                     <button
                       aria-label={`Delete haiku: ${h.line1}`}
@@ -207,6 +208,33 @@ function App() {
           </div>
         )}
       </div>
+      {showDownloadModal && (
+        <div className="dialog-container">
+          <div className="dialog" role="dialog" aria-labelledby="dialogTitle">
+            <h2 id="dialogTitle">Confirm Download</h2>
+            <div className="modal-button-row">
+              <button
+                className="confirm-button"
+                onClick={() => {
+                  shareAsImage(downloadID);
+                  setShowDownloadModal(false);
+                  setDownloadID("");
+                }}
+              >
+                Confirm
+              </button>
+              <button
+                className="cancel-button"
+                onClick={() => {
+                  setShowDownloadModal(false);
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

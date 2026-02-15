@@ -278,4 +278,142 @@ describe("App Component", () => {
     const haikuText = screen.queryByText(/it is me here hi/i);
     expect(haikuText).not.toBeInTheDocument();
   });
+
+  it("confirm download modal pops up when user clicks download", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    // Type a complete haiku (5-7-5 syllables)
+    const line1 = screen.getByPlaceholderText(/line 1/i);
+    const line2 = screen.getByPlaceholderText(/line 2/i);
+    const line3 = screen.getByPlaceholderText(/line 3/i);
+
+    await user.type(line1, "it is me here hi");
+    await user.type(line2, "hey you look at that right there");
+    await user.type(line3, "hey you hi there hi");
+
+    // Save Haiku
+    const saveButtonNode = screen.getByRole("button", { name: /^save$/i });
+    await user.click(saveButtonNode);
+
+    // View all saved haikus
+    const viewButtonNode = screen.getByRole("button", {
+      name: /view saved haikus/i,
+    });
+    await user.click(viewButtonNode);
+
+    //User Clicks Download Button
+    const downloadButton = screen.getByRole("button", { name: /download/i });
+    await user.click(downloadButton);
+
+    // Confirm Download Modal Pops Up
+    const downloadModal = screen.getByRole("dialog");
+    expect(downloadModal).toBeVisible();
+  });
+
+  it("confirm confirm button and cancel button render on modal dialog", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    // Type a complete haiku (5-7-5 syllables)
+    const line1 = screen.getByPlaceholderText(/line 1/i);
+    const line2 = screen.getByPlaceholderText(/line 2/i);
+    const line3 = screen.getByPlaceholderText(/line 3/i);
+
+    await user.type(line1, "it is me here hi");
+    await user.type(line2, "hey you look at that right there");
+    await user.type(line3, "hey you hi there hi");
+
+    // Save Haiku
+    const saveButtonNode = screen.getByRole("button", { name: /^save$/i });
+    await user.click(saveButtonNode);
+
+    // View all saved haikus
+    const viewButtonNode = screen.getByRole("button", {
+      name: /view saved haikus/i,
+    });
+    await user.click(viewButtonNode);
+
+    //User Clicks Download Button
+    const downloadButton = screen.getByRole("button", { name: /download/i });
+    await user.click(downloadButton);
+
+    //Confirm button and cancel button visible
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+    const confirmButton = screen.getByRole("button", { name: /confirm/i });
+    expect(cancelButton).toBeVisible();
+    expect(confirmButton).toBeVisible();
+  });
+
+  it("confirm download modal goes away when user clicks cancel", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    // Type a complete haiku (5-7-5 syllables)
+    const line1 = screen.getByPlaceholderText(/line 1/i);
+    const line2 = screen.getByPlaceholderText(/line 2/i);
+    const line3 = screen.getByPlaceholderText(/line 3/i);
+
+    await user.type(line1, "it is me here hi");
+    await user.type(line2, "hey you look at that right there");
+    await user.type(line3, "hey you hi there hi");
+
+    // Save Haiku
+    const saveButtonNode = screen.getByRole("button", { name: /^save$/i });
+    await user.click(saveButtonNode);
+
+    // View all saved haikus
+    const viewButtonNode = screen.getByRole("button", {
+      name: /view saved haikus/i,
+    });
+    await user.click(viewButtonNode);
+
+    //User Clicks Download Button
+    const downloadButton = screen.getByRole("button", { name: /download/i });
+    await user.click(downloadButton);
+
+    //User Clicks Cancel Button
+    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+    await user.click(cancelButton);
+
+    // Confirm Download Modal Goes Away
+    const downloadModal = screen.queryByRole("dialog");
+    expect(downloadModal).not.toBeInTheDocument();
+  });
+
+  it("confirm download modal goes away when user clicks cancel", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    // Type a complete haiku (5-7-5 syllables)
+    const line1 = screen.getByPlaceholderText(/line 1/i);
+    const line2 = screen.getByPlaceholderText(/line 2/i);
+    const line3 = screen.getByPlaceholderText(/line 3/i);
+
+    await user.type(line1, "it is me here hi");
+    await user.type(line2, "hey you look at that right there");
+    await user.type(line3, "hey you hi there hi");
+
+    // Save Haiku
+    const saveButtonNode = screen.getByRole("button", { name: /^save$/i });
+    await user.click(saveButtonNode);
+
+    // View all saved haikus
+    const viewButtonNode = screen.getByRole("button", {
+      name: /view saved haikus/i,
+    });
+    await user.click(viewButtonNode);
+
+    //User Clicks Download Button
+    const downloadButton = screen.getByRole("button", { name: /download/i });
+    await user.click(downloadButton);
+
+    //User Clicks Confirm Button
+    const confirmButton = screen.getByRole("button", { name: /confirm/i });
+    await user.click(confirmButton);
+
+    // Confirm Download Modal Goes Away
+    const downloadModal = screen.queryByRole("dialog");
+    expect(downloadModal).not.toBeInTheDocument();
+  });
 });
