@@ -45,10 +45,13 @@ function App() {
     const originalDisplay = buttons.style.display;
     buttons.style.display = "none";
 
-    //convert to canvas - take screenshot
-    const canvas = await html2canvas(cardElement);
+    // save and remove background
+    cardElement.style.backgroundColor = "rgb(212, 222, 231)";
 
-    // show buttons again
+    //convert to canvas - take screenshot w/ transparent background;
+    const canvas = await html2canvas(cardElement, { backgroundColor: null });
+
+    // show buttons & background again
     buttons.style.display = originalDisplay;
 
     //convert canvas to blob - download
