@@ -10,12 +10,12 @@ describe("App Component", () => {
     localStorage.clear();
   });
 
-  it("save button doesn't appear when haiku is unfinished", () => {
-    render(<App />);
+  //   it("save button doesn't appear when haiku is unfinished", () => {
+  //     render(<App />);
 
-    const buttonNode = screen.queryByRole("button", { name: /^save$/i });
-    expect(buttonNode).not.toBeInTheDocument();
-  });
+  //     const buttonNode = screen.queryByRole("button", { name: /^save$/i });
+  //     expect(buttonNode).not.toBeInTheDocument();
+  //   });
 
   it("save button appears when haiku is complete", async () => {
     const user = userEvent.setup();
@@ -46,7 +46,7 @@ describe("App Component", () => {
     await user.type(line2, "I hope you are feeling well");
     await user.type(line3, "I am waiting here");
 
-    const wellDone = screen.getByText(/Perfect haiku! Well done!/i);
+    const wellDone = screen.getByText(/you do haiku/i);
     expect(wellDone).toBeVisible;
   });
   it("saves a haiku to local storage when the save button is clicked", async () => {

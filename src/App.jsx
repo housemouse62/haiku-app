@@ -95,16 +95,12 @@ function App() {
           value={lines.line3}
           onChange={(value) => updateLine("line3", value)}
         />
-        {isComplete && !saved && (
-          <div className="complete-message">{"✨ You do haiku! ✨"}</div>
-        )}
-        {saved && (
-          <div>
-            <div className={`complete-message ${isFading ? "fade-out" : ""}`}>
-              {"✨ Saved! ✨"}
-            </div>
+        {(isComplete || saved) && (
+          <div className={`complete-message ${isFading ? "fade-out" : ""}`}>
+            {saved ? "✨ Saved! ✨" : "✨ You do haiku! ✨"}
           </div>
         )}
+
         {/* button row */}
         <div className="button-row">
           {/* Save Button */}
@@ -166,7 +162,7 @@ function App() {
         </div>
         {/* Example Haikus Area */}
         {!showHaikus ? (
-          <div className="example">
+          <div className="example" key={`view-${showHaikus}`}>
             <div className="example-title">Example Haiku:</div>
             <div className="example-text">
               Do you do haiku (5)
@@ -176,7 +172,7 @@ function App() {
             </div>
           </div>
         ) : (
-          <div className="savedHaikus">
+          <div className="savedHaikus" key={`view-${showHaikus}`}>
             <h2 className="savedHaikus-title">Saved Haikus</h2>
             {savedHaikus.length <= 0 ? (
               <p>No saved haikus, waiting for words of wisdom</p>
