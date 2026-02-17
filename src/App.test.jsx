@@ -10,13 +10,6 @@ describe("App Component", () => {
     localStorage.clear();
   });
 
-  //   it("save button doesn't appear when haiku is unfinished", () => {
-  //     render(<App />);
-
-  //     const buttonNode = screen.queryByRole("button", { name: /^save$/i });
-  //     expect(buttonNode).not.toBeInTheDocument();
-  //   });
-
   it("save button appears when haiku is complete", async () => {
     const user = userEvent.setup();
     render(<App />);
@@ -33,7 +26,7 @@ describe("App Component", () => {
     expect(buttonNode).toBeVisible();
   });
 
-  it("displays 'Perfect haiku! Well done!' when the the syllable requirements are met", async () => {
+  it("displays 'You do Haiku!' when the the syllable requirements are met", async () => {
     const user = userEvent.setup();
     render(<App />);
 
@@ -46,7 +39,7 @@ describe("App Component", () => {
     await user.type(line2, "I hope you are feeling well");
     await user.type(line3, "I am waiting here");
 
-    const wellDone = screen.getByText(/you do haiku/i);
+    const wellDone = screen.getByText(/✨ You do haiku! ✨/i);
     expect(wellDone).toBeVisible;
   });
   it("saves a haiku to local storage when the save button is clicked", async () => {
